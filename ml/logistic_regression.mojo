@@ -18,7 +18,7 @@ struct LogisticRegression[dtype: DType = DType.float64]:
     fn fit(inout self, inout X: NDArray[dtype], y: NDArray[dtype]) raises:
         var n_samples: Scalar[dtype] = Scalar[dtype](X.ndshape[0])
 
-        for i in range(self.n_iters):
+        for _ in range(self.n_iters):
             var temp: NDArray[dtype] = matmul_naive[dtype](X, self.weights)
             temp += self.bias
             var y_predicted: NDArray[dtype] = sigmoid(temp)
