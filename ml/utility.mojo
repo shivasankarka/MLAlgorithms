@@ -48,5 +48,5 @@ fn transpose[dtype: DType](X: NDArray[dtype]) raises -> NDArray[dtype]:
     var X_T: NDArray[dtype] = zeros[dtype](shape(X.ndshape[1], X.ndshape[0]))
     for i in range(X.ndshape[0]):
         for j in range(X.ndshape[1]):
-            X_T.store[width=1](j, i, val=X.load[width=1](i, j))
+            X_T[idx(j, i)] = X[idx(i, j)]
     return X_T^
