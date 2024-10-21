@@ -30,6 +30,7 @@ This project uses Magic, the Mojo package manager. Follow these steps to get sta
 3. Run test files using Magic. For example, to test Linear Regression:
    ```
    magic shell
+   cd tests
    mojo test_linearReg.mojo -I ../
    ```
 
