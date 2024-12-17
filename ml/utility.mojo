@@ -1,17 +1,17 @@
 from math import sqrt, exp
-from numojo import *
+from numojo.prelude import *
 import numojo as nm
 
 fn accuracy_score[dtype: DType](y_test: NDArray[dtype], y_pred: NDArray[dtype]) raises -> Scalar[f64]:
     var correct_count: Scalar[f64] = 0.0
-    for i in range(y_test.ndshape.ndsize):
-        if y_test.data[i] == y_pred.data[i]:
+    for i in range(y_test.size):
+        if y_test._buf[i] == y_pred._buf[i]:
             correct_count += 1.0
-    return correct_count / y_test.ndshape.ndsize
+    return correct_count / y_test.size
 
 fn sigmoid[dtype: DType](x: NDArray[dtype]) raises -> NDArray[dtype]:
-    var temp: NDArray[dtype] = zeros[dtype](x.ndshape)
-    for i in range(x.ndshape.ndsize):
+    var temp: NDArray[dtype] = nm.zeros[dtype](x.shape)
+    for i in range(x.shape.size):
         temp.store[width=1](i, val= 1 / (1 + exp(-x.load[width=1](i))))
     return temp^
 
@@ -45,8 +45,12 @@ fn r2_score[dtype: DType](y_true: NDArray[dtype], y_pred: NDArray[dtype]) raises
     return corr * corr
 
 fn transpose[dtype: DType](X: NDArray[dtype]) raises -> NDArray[dtype]:
-    var X_T: NDArray[dtype] = zeros[dtype](shape(X.ndshape[1], X.ndshape[0]))
+    var X_T: NDArray[dtype] = nm.zeros[dtype](shape(X.ndshape[1], X.ndshape[0]))
     for i in range(X.ndshape[0]):
         for j in range(X.ndshape[1]):
             X_T[idx(j, i)] = X[idx(i, j)]
     return X_T^
+
+fn euclidean_distance[dtype: DType](x1: NDArray[dtype], x2: NDArray[dtype]) raises -> Scalar[dtype]:
+    var result: Scalar[dtype] = nm.cumsum((x1 - x2)**2)
+    return sqrt(result)
